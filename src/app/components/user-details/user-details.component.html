@@ -1,0 +1,123 @@
+<div class="drawer-overlay" (click)="goBack()"></div>
+<div class="user-details-drawer" *ngIf="user">
+    <div class="drawer-header">
+        <h2 class="section-header">User Details</h2>
+        <button class="close-btn" (click)="goBack()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </div>
+
+    <div class="drawer-content">
+        <div class="profile-hero">
+            <div class="large-avatar" [style.background]="getAvatarColor(user.id)">
+                {{ getInitials(user.name) }}
+                <div class="status-indicator"></div>
+            </div>
+            <h3 class="hero-name">{{ user.name }}</h3>
+            <div class="hero-handle">&#64;{{ user.username || getHandle(user.name) }}</div>
+            <div class="hero-tags">
+                <span class="tag tag-active">ACTIVE</span>
+                <span class="tag tag-role">ADMIN</span>
+            </div>
+        </div>
+
+        <div class="details-section">
+            <div class="section-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                CONTACT INFORMATION
+            </div>
+            <div class="info-group">
+                <label>Email Address</label>
+                <div class="info-value">{{ user.email }}</div>
+            </div>
+            <div class="info-group">
+                <label>Phone Number</label>
+                <div class="info-value">{{ user.phone }}</div>
+            </div>
+        </div>
+
+        <div class="details-section">
+            <div class="section-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+                COMPANY DETAILS
+            </div>
+            <div class="row">
+                <div class="info-group half">
+                    <label>Department</label>
+                    <div class="info-value">{{ user.company.name }}</div>
+                </div>
+                <div class="info-group half">
+                    <label>Employee ID</label>
+                    <div class="info-value">EMP-{{ 48000 + user.id }}</div>
+                </div>
+            </div>
+            <div class="info-group">
+                <label>Job Title</label>
+                <div class="info-value">Senior Infrastructure Architect</div>
+            </div>
+        </div>
+
+        <div class="details-section">
+            <div class="section-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                ADDRESS
+            </div>
+            <div class="info-group">
+                <label>Primary Residence</label>
+                <div class="info-value">
+                    {{ user.address.suite }}, {{ user.address.street }}<br>
+                    {{ user.address.city }}, {{ user.address.zipcode }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="drawer-footer">
+        <div class="action-buttons">
+            <button class="btn-outline">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                Edit User
+            </button>
+            <button class="btn-primary-blue">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3-3.5 3.5z">
+                    </path>
+                </svg>
+                Reset Password
+            </button>
+        </div>
+        <button class="btn-danger">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                <line x1="12" y1="2" x2="12" y2="12"></line>
+            </svg>
+            Deactivate User Account
+        </button>
+    </div>
+</div>
+
+<div *ngIf="loading" class="loading">Loading user details...</div>
+<div *ngIf="error" class="error">{{ error }}</div>

@@ -1,0 +1,84 @@
+<div class="user-list-container">
+    <div class="user-list-header">
+        <div>
+            <h2 class="page-title">Users <span class="badge">{{ filteredUsers.length }} Users</span></h2>
+            <p class="supporting-text">Manage and monitor application users across all branches.</p>
+        </div>
+        <button class="btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <line x1="19" y1="8" x2="19" y2="14"></line>
+                <line x1="16" y1="11" x2="22" y2="11"></line>
+            </svg>
+            Add New User
+        </button>
+    </div>
+
+    <div class="table-card">
+        <app-search-filter [cities]="cities" (searchChange)="onSearch($event)" (cityChange)="onCityFilter($event)">
+        </app-search-filter>
+
+        <div *ngIf="loading" class="loading">Loading users...</div>
+        <div *ngIf="error" class="error">{{ error }}</div>
+
+        <table class="user-table" *ngIf="!loading && !error && filteredUsers.length > 0">
+            <thead>
+                <tr>
+                    <th class="table-header">Name</th>
+                    <th class="table-header">Email</th>
+                    <th class="table-header">Phone</th>
+                    <th class="table-header">City</th>
+                    <th class="table-header" style="text-align: right;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of filteredUsers" (click)="navigateToDetails(user.id)" class="user-row">
+                    <td>
+                        <div class="user-info">
+                            <div class="avatar" [style.background]="getAvatarColor(user.id)">
+                                {{ getInitials(user.name) }}
+                            </div>
+                            <div>
+                                <div class="user-name">{{ user.name }}</div>
+                                <div class="user-id">ID: EMP-{{ 40000 + user.id }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><a href="#" class="user-email" (click)="$event.stopPropagation()">{{ user.email }}</a></td>
+                    <td>{{ user.phone }}</td>
+                    <td><span class="city-pill">{{ user.address.city }}</span></td>
+                    <td style="text-align: right;">
+                        <button class="btn-text" (click)="navigateToDetails(user.id); $event.stopPropagation()">View
+                            Details</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div *ngIf="!loading && !error && filteredUsers.length === 0" class="no-results">
+            No users found matching your criteria.
+        </div>
+
+        <div class="pagination" *ngIf="!loading && !error && filteredUsers.length > 0">
+            <span class="supporting-text">Showing 1 to {{ filteredUsers.length }} of {{ filteredUsers.length }}
+                results</span>
+            <div class="pagination-controls">
+                <button class="page-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 12"></polyline>
+                    </svg></button>
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <span style="color: var(--text-secondary);">...</span>
+                <button class="page-btn">250</button>
+                <button class="page-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg></button>
+            </div>
+        </div>
+    </div>
+</div>
